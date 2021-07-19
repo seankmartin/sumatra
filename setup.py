@@ -34,6 +34,13 @@ if major_python_version < 3 or (major_python_version == 3 and minor_python_versi
     install_requires.append('pathlib')
     install_requires.append('configparser')
 
+entry_points = {
+    "console_scripts": [
+        "smt = sumatra.bin:smt",
+        "smtweb = sumatra.bin:smtweb"
+    ]
+}
+
 setup(
     name = "Sumatra",
     version = "0.8dev",
@@ -43,12 +50,14 @@ setup(
                 'sumatra.versioncontrol', 'sumatra.formatting',
                 'sumatra.web', 'sumatra.web.templatetags',
                 'sumatra.publishing',
-                'sumatra.publishing.latex', 'sumatra.publishing.sphinxext'],
+                'sumatra.publishing.latex', 'sumatra.publishing.sphinxext', 
+                'sumatra.bin'],
     package_data = {'sumatra': ['web/static/css/*.css', 'web/static/js/*.js',
                                 'web/static/fonts/*', 'web/templates/*.html',
                                 'publishing/latex/sumatra.sty',
                                 'formatting/latex_template.tex', 'external_scripts/script_introspect.R']},
-    scripts = ['bin/smt', 'bin/smtweb', 'bin/smt-complete.sh'],
+    entry_points = {"console_scripts": ["smt = sumatra.bin:smt",
+                                        "smtweb = sumatra.bin.smtweb:cli"]},
     author = "Sumatra authors and contributors",
     author_email = "andrew.davison@unic.cnrs-gif.fr",
     description = "A tool for automated tracking of computation-based scientific projects",

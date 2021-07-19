@@ -88,5 +88,8 @@ def main(argv):
     management.call_command('runserver', address, use_reloader=False)
 
 
+def cli():
+    main(sys.argv[1:])
+
 if __name__ == "__main__":
     main(sys.argv[1:])
