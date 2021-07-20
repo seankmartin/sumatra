@@ -16,6 +16,8 @@ under version control.
 from __future__ import with_statement
 from __future__ import unicode_literals
 import warnings
+import distutils.sysconfig
+from subprocess import PIPE, Popen
 
 from sumatra.dependency_finder import neuron, python, genesis, matlab, r
 
@@ -35,6 +37,26 @@ def find_dependencies(filename, executable):
         return matlab.find_dependencies(filename, executable)
     elif "python" in executable.name.lower():
         return python.find_dependencies(filename, executable)
+    elif "simuran" in executable.name.lower():
+        command = "pip --disable-pip-version-check list --format columns"
+        with Popen(command, stdout=PIPE, stderr=None, shell=True) as process:
+            output = process.communicate()[0].decode("utf-8")
+        pth = distutils.sysconfig.get_python_lib()
+        l = output.strip().split("\n")
+        dependencies = []
+        for line in l[2:]:
+            vals = line.strip().split()
+            pkg = vals[0]
+            version = vals[1]
+            if len(vals) == 3:
+                source = vals[2]
+            else:
+                source = pth
+            dependency = python.Dependency(
+                pkg, source, version,
+            )
+            dependencies.append(dependency)
+        return dependencies
     elif executable.name == "NEURON":
         return neuron.find_dependencies(filename, executable)
     elif executable.name == "GENESIS":
