@@ -56,7 +56,7 @@ setup(
                                 'publishing/latex/sumatra.sty',
                                 'formatting/latex_template.tex', 'external_scripts/script_introspect.R']},
     scripts = ['bin/smt-complete.sh'],
-    entry_points = {'console_scripts': ['smt = sumatra.cli:smt',
+    entry_points = {'console_scripts': ['smt = sumatra.cli.smt',
                                         'smtweb = sumatra.cli.smtweb:cli']},
     author = "Sumatra authors and contributors",
     author_email = "andrew.davison@unic.cnrs-gif.fr",
